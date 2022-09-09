@@ -45,58 +45,60 @@ namespace KeepWowLoggedIn
         //TODO: on exit, clean up screenshots
         private void button2_Click(object sender, EventArgs e)
         {
-            // 0 is our default - if it is 0 then it hasn't been changed
-            if (selectedProcessId == 0)
-            {
-                // TODO: center this over the running form
-                MessageBox.Show("Please select a process from the dropdown");
-                return;
-            };
+            //// 0 is our default - if it is 0 then it hasn't been changed
+            //if (selectedProcessId == 0)
+            //{
+            //    // TODO: center this over the running form
+            //    MessageBox.Show("Please select a process from the dropdown");
+            //    return;
+            //};
 
-            Process proc = Process.GetProcessById(selectedProcessId);
-            if (SetForegroundWindow(proc.MainWindowHandle))
-            {
-                RECT srcRect;
-                if (!proc.MainWindowHandle.Equals(IntPtr.Zero))
-                {
-                    if (GetWindowRect(proc.MainWindowHandle, out srcRect))
-                    {
-                        int width = srcRect.Right - srcRect.Left;
-                        int height = srcRect.Bottom - srcRect.Top;
+            //Process proc = Process.GetProcessById(selectedProcessId);
+            //if (SetForegroundWindow(proc.MainWindowHandle))
+            //{
+            //    RECT srcRect;
+            //    if (!proc.MainWindowHandle.Equals(IntPtr.Zero))
+            //    {
+            //        if (GetWindowRect(proc.MainWindowHandle, out srcRect))
+            //        {
+            //            int width = srcRect.Right - srcRect.Left;
+            //            int height = srcRect.Bottom - srcRect.Top;
 
-                        Bitmap bmp = new Bitmap(width, height);
-                        Graphics screenG = Graphics.FromImage(bmp);
+            //            Bitmap bmp = new Bitmap(width, height);
+            //            Graphics screenG = Graphics.FromImage(bmp);
 
-                        try
-                        {
-                            screenG.CopyFromScreen(srcRect.Left, srcRect.Top,
-                                    0, 0, new Size(width, height),
-                                    CopyPixelOperation.SourceCopy);
+            //            try
+            //            {
+            //                screenG.CopyFromScreen(srcRect.Left, srcRect.Top,
+            //                        0, 0, new Size(width, height),
+            //                        CopyPixelOperation.SourceCopy);
 
-                            using (FileStream fs = new FileStream(Path.GetTempFileName(),
-                               FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None,
-                               4096, FileOptions.RandomAccess | FileOptions.DeleteOnClose))
-                            {
-                                // temp file exists
-                                bmp.Save(fs, ImageFormat.Jpeg);
-                                pictureBox1.Image = Image.FromStream(fs);
-                            }
+            //                using (FileStream fs = new FileStream(Path.GetTempFileName(),
+            //                   FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None,
+            //                   4096, FileOptions.RandomAccess | FileOptions.DeleteOnClose))
+            //                {
+            //                    // temp file exists
+            //                    bmp.Save(fs, ImageFormat.Jpeg);
+            //                    pictureBox1.Image = Image.FromStream(fs);
+            //                }
 
-                            // tmp image should be deleted here due to FileOptions.DeleteOnClose
+            //                // tmp image should be deleted here due to FileOptions.DeleteOnClose
 
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message);
-                        }
-                        finally
-                        {
-                            screenG.Dispose();
-                            bmp.Dispose();
-                        }
-                    }
-                }
-            }
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                MessageBox.Show(ex.Message);
+            //            }
+            //            finally
+            //            {
+            //                screenG.Dispose();
+            //                bmp.Dispose();
+            //            }
+            //        }
+            //    }
+            //}
+
+            pictureBox1.Image = Utils.ImagingUtils.SaveAndReturnTmpImageFromProcessId(selectedProcessId);
         }
 
         private int selectedProcessId = 0;
