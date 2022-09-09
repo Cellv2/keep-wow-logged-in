@@ -1,28 +1,10 @@
 using IronOcr;
 using System.Diagnostics;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 
 namespace KeepWowLoggedIn
 {
     public partial class Form1 : Form
     {
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-        [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RECT
-        {
-            public int Left;
-            public int Top;
-            public int Right;
-            public int Bottom;
-        }
-
         public Form1()
         {
             InitializeComponent();
@@ -42,62 +24,8 @@ namespace KeepWowLoggedIn
             textBox1.Text = plainText.Text;
         }
 
-        //TODO: on exit, clean up screenshots
         private void button2_Click(object sender, EventArgs e)
         {
-            //// 0 is our default - if it is 0 then it hasn't been changed
-            //if (selectedProcessId == 0)
-            //{
-            //    // TODO: center this over the running form
-            //    MessageBox.Show("Please select a process from the dropdown");
-            //    return;
-            //};
-
-            //Process proc = Process.GetProcessById(selectedProcessId);
-            //if (SetForegroundWindow(proc.MainWindowHandle))
-            //{
-            //    RECT srcRect;
-            //    if (!proc.MainWindowHandle.Equals(IntPtr.Zero))
-            //    {
-            //        if (GetWindowRect(proc.MainWindowHandle, out srcRect))
-            //        {
-            //            int width = srcRect.Right - srcRect.Left;
-            //            int height = srcRect.Bottom - srcRect.Top;
-
-            //            Bitmap bmp = new Bitmap(width, height);
-            //            Graphics screenG = Graphics.FromImage(bmp);
-
-            //            try
-            //            {
-            //                screenG.CopyFromScreen(srcRect.Left, srcRect.Top,
-            //                        0, 0, new Size(width, height),
-            //                        CopyPixelOperation.SourceCopy);
-
-            //                using (FileStream fs = new FileStream(Path.GetTempFileName(),
-            //                   FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None,
-            //                   4096, FileOptions.RandomAccess | FileOptions.DeleteOnClose))
-            //                {
-            //                    // temp file exists
-            //                    bmp.Save(fs, ImageFormat.Jpeg);
-            //                    pictureBox1.Image = Image.FromStream(fs);
-            //                }
-
-            //                // tmp image should be deleted here due to FileOptions.DeleteOnClose
-
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                MessageBox.Show(ex.Message);
-            //            }
-            //            finally
-            //            {
-            //                screenG.Dispose();
-            //                bmp.Dispose();
-            //            }
-            //        }
-            //    }
-            //}
-
             pictureBox1.Image = Utils.ImagingUtils.SaveAndReturnTmpImageFromProcessId(selectedProcessId);
         }
 
@@ -127,6 +55,16 @@ namespace KeepWowLoggedIn
 
             string ocrText = IronOcr.Read(pictureBox1.Image).Text;
 
+            //TODO: check the exact words being used when a connection is trying to be made - we don't want to press return again while connecting!
+            // if we get any of the messages, we probably just want to put a 5 sec sleep on it then continue down with the other contains() checks
+            // perhaps this is just the word 'cancel'? all messages that I have seen for a reconnect state seem to have that as the confirm message
+
+            if (!ocrText.Contains("Disconnect", StringComparison.OrdinalIgnoreCase) && !ocrText.Contains("Reconnect", StringComparison.OrdinalIgnoreCase))
+            {
+                textBox1.Text = "reconnect not found, no actions taken";
+                return;
+            }
+
             if (ocrText.Contains("Disconnect", StringComparison.OrdinalIgnoreCase))
             {
                 textBox1.Text = "disconnect found";
@@ -136,11 +74,7 @@ namespace KeepWowLoggedIn
             if (ocrText.Contains("Reconnect", StringComparison.OrdinalIgnoreCase))
             {
                 textBox1.Text = "reconnect found";
-                Utils.CursorUtils.ClickReconnectButton(selectedProcessId);
-            }
-            else
-            {
-                textBox1.Text = "reconnect not found, no actions taken";
+                Utils.CursorUtils.ClickReconnectButtonAsync(selectedProcessId);
             }
 
             //Thread.Sleep(TimeSpan.FromSeconds(120));

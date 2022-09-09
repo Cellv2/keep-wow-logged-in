@@ -27,10 +27,6 @@ namespace KeepWowLoggedIn.Utils
             public int Bottom;
         }
 
-        private FileStream fs = new FileStream(Path.GetTempFileName(),
-                               FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None,
-                               4096, FileOptions.RandomAccess | FileOptions.DeleteOnClose);
-
         public static Image? SaveAndReturnTmpImageFromProcessId(int processId)
         {
             // 0 is our default - if it is 0 then it hasn't been changed
