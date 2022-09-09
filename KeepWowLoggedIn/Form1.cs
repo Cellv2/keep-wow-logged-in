@@ -30,7 +30,6 @@ namespace KeepWowLoggedIn
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //pictureBox1.ImageLocation = @"test.png";
             pictureBox1.ImageLocation = @".\Img\instructions.png";
         }
 
@@ -114,6 +113,8 @@ namespace KeepWowLoggedIn
             }               
         }
 
+        // TODO: button to make the process window the active window? This way it must 
+        // TODO: hotkey to force break/quit the application?
         private void btnBeginWatching_Click(object sender, EventArgs e)
         {
             IronTesseract IronOcr = new IronTesseract();
@@ -122,10 +123,17 @@ namespace KeepWowLoggedIn
 
             if (ocrText.Contains("Reconnect", StringComparison.OrdinalIgnoreCase))
             {
-
+                textBox1.Text = "reconnect found";
+                var width = pictureBox1.Image.Width;
+                var height = pictureBox1.Image.Height;
+                Utils.CursorUtils.CalcReconnectButtonLocAndClick(width, height);
+            }
+            else
+            {
+                textBox1.Text = "reconnect not found";
             }
 
-            textBox1.Text = ocrText;
+            //textBox1.Text = ocrText;
         }
     }
 }
