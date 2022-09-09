@@ -12,7 +12,8 @@ namespace KeepWowLoggedIn
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            pictureBox1.ImageLocation = @".\Img\instructions.png";
+            //pictureBox1.ImageLocation = @".\Img\instructions.png";
+            pictureBox1.Image = Constants.ImageConstants.InstructionsImage;
         }
 
         private void button1_Click(object sender, EventArgs e)

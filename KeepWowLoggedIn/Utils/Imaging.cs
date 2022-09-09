@@ -34,18 +34,21 @@ namespace KeepWowLoggedIn.Utils
             {
                 // TODO: center this over the running form
                 MessageBox.Show("Please select a process from the dropdown");
-                return null;
+                return Constants.ImageConstants.InstructionsImage;
             };
 
-            Process proc = Process.GetProcessById(processId);
-            if (proc == null) return null;
+            Process process = Process.GetProcessById(processId);
+            if (process == null || !SetForegroundWindow(process.MainWindowHandle))
+            {
+                return Constants.ImageConstants.InstructionsImage;
+            }
 
-            if (SetForegroundWindow(proc.MainWindowHandle))
+            if (SetForegroundWindow(process.MainWindowHandle))
             {
                 RECT srcRect;
-                if (!proc.MainWindowHandle.Equals(IntPtr.Zero))
+                if (!process.MainWindowHandle.Equals(IntPtr.Zero))
                 {
-                    if (GetWindowRect(proc.MainWindowHandle, out srcRect))
+                    if (GetWindowRect(process.MainWindowHandle, out srcRect))
                     {
                         int width = srcRect.Right - srcRect.Left;
                         int height = srcRect.Bottom - srcRect.Top;
