@@ -45,9 +45,13 @@ namespace KeepWowLoggedIn
         //TODO: on exit, clean up screenshots
         private void button2_Click(object sender, EventArgs e)
         {
-            // TODO: maybe some kind of popup saying to select a process?
             // 0 is our default - if it is 0 then it hasn't been changed
-            if (selectedProcessId == 0) return;
+            if (selectedProcessId == 0)
+            {
+                // TODO: center this over the running form
+                MessageBox.Show("Please select a process from the dropdown");
+                return;
+            };
 
             Process proc = Process.GetProcessById(selectedProcessId);
             if (SetForegroundWindow(proc.MainWindowHandle))
@@ -121,18 +125,23 @@ namespace KeepWowLoggedIn
 
             string ocrText = IronOcr.Read(pictureBox1.Image).Text;
 
+            if (ocrText.Contains("Disconnect", StringComparison.OrdinalIgnoreCase))
+            {
+                textBox1.Text = "disconnect found";
+                Utils.CursorUtils.ClickDisconnectedButton(selectedProcessId);
+            }
+
             if (ocrText.Contains("Reconnect", StringComparison.OrdinalIgnoreCase))
             {
                 textBox1.Text = "reconnect found";
-                var width = pictureBox1.Image.Width;
-                var height = pictureBox1.Image.Height;
-                Utils.CursorUtils.CalcReconnectButtonLocAndClick(width, height);
+                Utils.CursorUtils.ClickReconnectButton(selectedProcessId);
             }
             else
             {
-                textBox1.Text = "reconnect not found";
+                textBox1.Text = "reconnect not found, no actions taken";
             }
 
+            //Thread.Sleep(TimeSpan.FromSeconds(120));
             //textBox1.Text = ocrText;
         }
     }
