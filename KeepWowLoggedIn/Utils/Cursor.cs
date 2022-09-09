@@ -32,8 +32,6 @@ namespace KeepWowLoggedIn.Utils
             {
                 SetForegroundWindow(handle);
                 SendKeys.Send("{ENTER}");
-                await Task.Run(() => Task.Delay(TimeSpan.FromSeconds(5)));
-                //Thread.Sleep(TimeSpan.FromSeconds(5));
             }
             catch (Exception ex)
             {
@@ -58,8 +56,6 @@ namespace KeepWowLoggedIn.Utils
             {
                 SetForegroundWindow(handle);
                 SendKeys.Send("{ENTER}");
-                await Task.Run(() => Task.Delay(TimeSpan.FromSeconds(5)));
-                //Thread.Sleep(TimeSpan.FromSeconds(5));
             }
             catch (Exception ex)
             {
