@@ -16,7 +16,7 @@ namespace KeepWowLoggedIn.Utils
         [DllImport("USER32.DLL")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        public static async void ClickDisconnectedButton(int processId)
+        public static void ClickDisconnectedButton(int processId)
         {
             var process = Process.GetProcessById(processId);
             if (process == null) return;
@@ -40,7 +40,7 @@ namespace KeepWowLoggedIn.Utils
         }
 
         // Press return and then sleep for 5 seconds
-        public static async void ClickReconnectButtonAsync(int processId)
+        public static void ClickReconnectButton(int processId)
         {
             var process = Process.GetProcessById(processId);
             if (process == null) return;

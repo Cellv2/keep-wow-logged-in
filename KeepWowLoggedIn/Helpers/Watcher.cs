@@ -78,7 +78,7 @@ namespace KeepWowLoggedIn.Helpers
                 if (ocrText.Contains("Reconnect", StringComparison.OrdinalIgnoreCase))
                 {
                     _textBox.Text = "reconnect found";
-                    Utils.CursorUtils.ClickReconnectButtonAsync(processId);
+                    Utils.CursorUtils.ClickReconnectButton(processId);
                     await Task.Run(() => Task.Delay(TimeSpan.FromSeconds(5)));
                 }
 
