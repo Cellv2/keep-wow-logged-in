@@ -5,6 +5,8 @@ namespace KeepWowLoggedIn
 {
     public partial class Form1 : Form
     {
+        private Helpers.Watcher? watcher = null;
+
         public Form1()
         {
             InitializeComponent();
@@ -48,43 +50,12 @@ namespace KeepWowLoggedIn
             }               
         }
 
-
-        private Helpers.Watcher? watcher = null;
         // TODO: button to make the process window the active window? This way it must 
         // TODO: hotkey to force break/quit the application?
         private void btnBeginWatching_Click(object sender, EventArgs e)
         {
-            //Helpers.Watcher watcher = new Helpers.Watcher(pictureBox1, textBox1);
             watcher = new Helpers.Watcher(pictureBox1, textBox1);
             watcher.StartWatchingProcess(selectedProcessId);
-            //IronTesseract IronOcr = new IronTesseract();
-
-            //string ocrText = IronOcr.Read(pictureBox1.Image).Text;
-
-            ////TODO: check the exact words being used when a connection is trying to be made - we don't want to press return again while connecting!
-            //// if we get any of the messages, we probably just want to put a 5 sec sleep on it then continue down with the other contains() checks
-            //// perhaps this is just the word 'cancel'? all messages that I have seen for a reconnect state seem to have that as the confirm message
-
-            //if (!ocrText.Contains("Disconnect", StringComparison.OrdinalIgnoreCase) && !ocrText.Contains("Reconnect", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    textBox1.Text = "reconnect not found, no actions taken";
-            //    return;
-            //}
-
-            //if (ocrText.Contains("Disconnect", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    textBox1.Text = "disconnect found";
-            //    Utils.CursorUtils.ClickDisconnectedButton(selectedProcessId);
-            //}
-
-            //if (ocrText.Contains("Reconnect", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    textBox1.Text = "reconnect found";
-            //    Utils.CursorUtils.ClickReconnectButtonAsync(selectedProcessId);
-            //}
-
-            //Thread.Sleep(TimeSpan.FromSeconds(120));
-            //textBox1.Text = ocrText;
         }
 
         private void btnStopWatching_Click(object sender, EventArgs e)
