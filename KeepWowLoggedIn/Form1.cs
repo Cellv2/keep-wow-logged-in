@@ -48,11 +48,14 @@ namespace KeepWowLoggedIn
             }               
         }
 
+
+        private Helpers.Watcher? watcher = null;
         // TODO: button to make the process window the active window? This way it must 
         // TODO: hotkey to force break/quit the application?
         private void btnBeginWatching_Click(object sender, EventArgs e)
         {
-            Helpers.Watcher watcher = new Helpers.Watcher(pictureBox1, textBox1);
+            //Helpers.Watcher watcher = new Helpers.Watcher(pictureBox1, textBox1);
+            watcher = new Helpers.Watcher(pictureBox1, textBox1);
             watcher.StartWatchingProcess(selectedProcessId);
             //IronTesseract IronOcr = new IronTesseract();
 
@@ -82,6 +85,18 @@ namespace KeepWowLoggedIn
 
             //Thread.Sleep(TimeSpan.FromSeconds(120));
             //textBox1.Text = ocrText;
+        }
+
+        private void btnStopWatching_Click(object sender, EventArgs e)
+        {
+            if (watcher != null)
+            {
+                watcher.stopWatching();
+            }
+            else
+            {
+                MessageBox.Show("No process is being watched!\nPlease select a process from the dropdown");
+            }
         }
     }
 }

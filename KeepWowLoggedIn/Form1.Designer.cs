@@ -34,6 +34,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.btnBeginWatching = new System.Windows.Forms.Button();
+            this.btnStopWatching = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -94,11 +95,22 @@
             this.btnBeginWatching.UseVisualStyleBackColor = true;
             this.btnBeginWatching.Click += new System.EventHandler(this.btnBeginWatching_Click);
             // 
+            // btnStopWatching
+            // 
+            this.btnStopWatching.Location = new System.Drawing.Point(654, 286);
+            this.btnStopWatching.Name = "btnStopWatching";
+            this.btnStopWatching.Size = new System.Drawing.Size(117, 23);
+            this.btnStopWatching.TabIndex = 6;
+            this.btnStopWatching.Text = "Stop Watching";
+            this.btnStopWatching.UseVisualStyleBackColor = true;
+            this.btnStopWatching.Click += new System.EventHandler(this.btnStopWatching_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnStopWatching);
             this.Controls.Add(this.btnBeginWatching);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.button2);
@@ -122,5 +134,6 @@
         private Button button2;
         private ComboBox comboBox1;
         private Button btnBeginWatching;
+        private Button btnStopWatching;
     }
 }
