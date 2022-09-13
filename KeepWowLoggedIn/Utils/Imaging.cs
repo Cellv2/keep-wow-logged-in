@@ -18,6 +18,7 @@ namespace KeepWowLoggedIn.Utils
         [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
+
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
         {
@@ -45,6 +46,9 @@ namespace KeepWowLoggedIn.Utils
 
             if (SetForegroundWindow(process.MainWindowHandle))
             {
+                // force window to top before any screenshots are taken
+                SendKeys.Send(" ");
+
                 RECT srcRect;
                 if (!process.MainWindowHandle.Equals(IntPtr.Zero))
                 {

@@ -14,8 +14,8 @@ namespace KeepWowLoggedIn
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //pictureBox1.ImageLocation = @".\Img\instructions.png";
             pictureBox1.Image = Constants.ImageConstants.InstructionsImage;
+            watcher = new Helpers.Watcher(pictureBox1, textBox1);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -35,7 +35,15 @@ namespace KeepWowLoggedIn
         private int selectedProcessId = 0;
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int.TryParse((comboBox1.SelectedItem.ToString() ?? "0").Split(" - ")[1], out selectedProcessId);
+            if (int.TryParse((comboBox1.SelectedItem.ToString() ?? "0").Split(" - ")[1], out selectedProcessId))
+            {
+                if (watcher == null)
+                {
+                    watcher = new Helpers.Watcher(pictureBox1, textBox1);
+                }
+
+                watcher.UpdatePictureImage(selectedProcessId);
+            }
         }
 
         // TODO: when selecting dropdown item, update screenshot in tooling
@@ -47,14 +55,18 @@ namespace KeepWowLoggedIn
             foreach (var process in filteredProcesses)
             {
                 comboBox1.Items.Add($"{process.ProcessName} - {process.Id}");
-            }               
+            }
         }
 
         // TODO: button to make the process window the active window? This way it must 
         // TODO: hotkey to force break/quit the application?
         private void btnBeginWatching_Click(object sender, EventArgs e)
         {
-            watcher = new Helpers.Watcher(pictureBox1, textBox1);
+            if (watcher == null)
+            {
+                watcher = new Helpers.Watcher(pictureBox1, textBox1);
+            }
+
             watcher.StartWatchingProcess(selectedProcessId);
         }
 
