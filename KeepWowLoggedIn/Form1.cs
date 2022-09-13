@@ -22,8 +22,6 @@ namespace KeepWowLoggedIn
         {
             var engine = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default);
             var img = Pix.LoadFromMemory(Utils.ImagingUtils.ImageToByteArray(pictureBox1.Image));
-            //pictureBox1.ImageLocation = @"C:\Users\richa\Downloads\you-have-been-disconnected.png";
-            //var img = Pix.LoadFromFile(@"C:\Users\richa\Downloads\you-have-been-disconnected.png");
             var page = engine.Process(img);
             textBox1.Text = page.GetText();
             page.Dispose();
