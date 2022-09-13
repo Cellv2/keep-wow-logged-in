@@ -1,9 +1,9 @@
-﻿using IronOcr;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tesseract;
 
 namespace KeepWowLoggedIn.Helpers
 {
@@ -12,12 +12,12 @@ namespace KeepWowLoggedIn.Helpers
         private bool _isWatching = false;
         private PictureBox _pictureBox;
         private TextBox _textBox;
-        private IronTesseract _ironOcr;
+        private TesseractEngine _tesseract;
         public Watcher(PictureBox pictureBox, TextBox textBox)
         {
             _pictureBox = pictureBox;
             _textBox = textBox;
-            _ironOcr = new IronTesseract(); // TODO: DI this perhaps
+            _tesseract = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default);
         }
 
         // TODO: move this to imaging class? Or form class??
@@ -31,18 +31,29 @@ namespace KeepWowLoggedIn.Helpers
             _isWatching = true;
             _textBox.Text = "watching started";
 
-
-            //IronTesseract IronOcr = new IronTesseract();
-
             //for (int i = 0; i < 100; i++)
             while (_isWatching)
             {
                 UpdatePictureImage(processId);
-                string ocrText = _ironOcr.Read(_pictureBox.Image).Text;
+                var img = Pix.LoadFromMemory(Utils.ImagingUtils.ImageToByteArray(_pictureBox.Image));
+                var page = _tesseract.Process(img);
+                string ocrText = page.GetText();
+
+                // should not need these any longer as the text is now saved into the ocrText variable
+                page.Dispose();
+                img.Dispose();
 
                 //TODO: check the exact words being used when a connection is trying to be made - we don't want to press return again while connecting!
                 // if we get any of the messages, we probably just want to put a 5 sec sleep on it then continue down with the other contains() checks
                 // perhaps this is just the word 'cancel'? all messages that I have seen for a reconnect state seem to have that as the confirm message
+
+                // sometimes battlenet seems to 'disconnect' - we try capture this first and send escape once to cancel out as sending enter opens up a browser tab with a help page
+                if (ocrText.Contains("Help", StringComparison.OrdinalIgnoreCase) || ocrText.Contains("WOW51900325", StringComparison.OrdinalIgnoreCase)) ;
+                {
+                    _textBox.Text = "'you have been disconnected' message appeared, sending escape";
+                    SendKeys.Send("{ESC}");
+                    continue;
+                }
 
                 if (!ocrText.Contains("Disconnect", StringComparison.OrdinalIgnoreCase) && !ocrText.Contains("Reconnect", StringComparison.OrdinalIgnoreCase))
                 {

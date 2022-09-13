@@ -28,6 +28,16 @@ namespace KeepWowLoggedIn.Utils
             public int Bottom;
         }
 
+        public static byte[] ImageToByteArray(Image imageIn)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var bmp = new Bitmap(imageIn);
+                bmp.Save(ms, ImageFormat.Jpeg);
+                return ms.ToArray();
+            }
+        }
+
         public static Image? SaveAndReturnTmpImageFromProcessId(int processId)
         {
             // 0 is our default - if it is 0 then it hasn't been changed

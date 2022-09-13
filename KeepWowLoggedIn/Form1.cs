@@ -1,5 +1,5 @@
-using IronOcr;
 using System.Diagnostics;
+using Tesseract;
 
 namespace KeepWowLoggedIn
 {
@@ -20,11 +20,14 @@ namespace KeepWowLoggedIn
 
         private void button1_Click(object sender, EventArgs e)
         {
-            IronTesseract IronOcr = new IronTesseract();
-
-            var plainText = IronOcr.Read(pictureBox1.ImageLocation);
-
-            textBox1.Text = plainText.Text;
+            var engine = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default);
+            var img = Pix.LoadFromMemory(Utils.ImagingUtils.ImageToByteArray(pictureBox1.Image));
+            //pictureBox1.ImageLocation = @"C:\Users\richa\Downloads\you-have-been-disconnected.png";
+            //var img = Pix.LoadFromFile(@"C:\Users\richa\Downloads\you-have-been-disconnected.png");
+            var page = engine.Process(img);
+            textBox1.Text = page.GetText();
+            page.Dispose();
+            img.Dispose();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -62,6 +65,12 @@ namespace KeepWowLoggedIn
         // TODO: hotkey to force break/quit the application?
         private void btnBeginWatching_Click(object sender, EventArgs e)
         {
+            if (selectedProcessId == 0)
+            {
+                MessageBox.Show("Please select a process to watch from the dropdown");
+                return;
+            }
+
             if (watcher == null)
             {
                 watcher = new Helpers.Watcher(pictureBox1, textBox1);
