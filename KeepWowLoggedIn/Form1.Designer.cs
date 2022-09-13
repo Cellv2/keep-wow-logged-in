@@ -49,28 +49,30 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(244, 261);
+            this.button1.Location = new System.Drawing.Point(26, 204);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(379, 23);
+            this.button1.Size = new System.Drawing.Size(166, 23);
             this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
+            this.button1.Text = "Debug - Run OCR";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(244, 311);
+            this.textBox1.Location = new System.Drawing.Point(244, 245);
             this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(379, 23);
             this.textBox1.TabIndex = 2;
+            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(244, 378);
+            this.button2.Location = new System.Drawing.Point(26, 244);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(379, 23);
+            this.button2.Size = new System.Drawing.Size(166, 23);
             this.button2.TabIndex = 3;
-            this.button2.Text = "Take Screenshot";
+            this.button2.Text = "Debug - Screenshot Process";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -78,7 +80,7 @@
             // 
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(244, 349);
+            this.comboBox1.Location = new System.Drawing.Point(244, 320);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(379, 23);
             this.comboBox1.TabIndex = 4;
@@ -87,7 +89,7 @@
             // 
             // btnBeginWatching
             // 
-            this.btnBeginWatching.Location = new System.Drawing.Point(244, 413);
+            this.btnBeginWatching.Location = new System.Drawing.Point(244, 349);
             this.btnBeginWatching.Name = "btnBeginWatching";
             this.btnBeginWatching.Size = new System.Drawing.Size(379, 23);
             this.btnBeginWatching.TabIndex = 5;
@@ -97,9 +99,9 @@
             // 
             // btnStopWatching
             // 
-            this.btnStopWatching.Location = new System.Drawing.Point(654, 286);
+            this.btnStopWatching.Location = new System.Drawing.Point(244, 378);
             this.btnStopWatching.Name = "btnStopWatching";
-            this.btnStopWatching.Size = new System.Drawing.Size(117, 23);
+            this.btnStopWatching.Size = new System.Drawing.Size(379, 23);
             this.btnStopWatching.TabIndex = 6;
             this.btnStopWatching.Text = "Stop Watching";
             this.btnStopWatching.UseVisualStyleBackColor = true;
