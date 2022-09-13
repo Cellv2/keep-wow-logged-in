@@ -48,7 +48,7 @@ namespace KeepWowLoggedIn.Helpers
                 // perhaps this is just the word 'cancel'? all messages that I have seen for a reconnect state seem to have that as the confirm message
 
                 // sometimes battlenet seems to 'disconnect' - we try capture this first and send escape once to cancel out as sending enter opens up a browser tab with a help page
-                if (ocrText.Contains("Help", StringComparison.OrdinalIgnoreCase) || ocrText.Contains("WOW51900325", StringComparison.OrdinalIgnoreCase)) ;
+                if (ocrText.Contains("Help", StringComparison.OrdinalIgnoreCase) || ocrText.Contains("WOW51900325", StringComparison.OrdinalIgnoreCase))
                 {
                     _textBox.Text = "'you have been disconnected' message appeared, sending escape";
                     SendKeys.Send("{ESC}");
