@@ -17,7 +17,7 @@ namespace KeepWowLoggedIn.Helpers
         {
             _pictureBox = pictureBox;
             _textBox = textBox;
-            _tesseract = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default);
+            _tesseract = new TesseractEngine(@"./tessdata", "eng_best", EngineMode.Default);
         }
 
         // TODO: move this to imaging class? Or form class??
@@ -35,6 +35,7 @@ namespace KeepWowLoggedIn.Helpers
             while (_isWatching)
             {
                 UpdatePictureImage(processId);
+                //var img = Pix.LoadFromMemory(Utils.ImagingUtils.ImageToByteArray(_pictureBox.Image));
                 var img = Pix.LoadFromMemory(Utils.ImagingUtils.ImageToByteArray(_pictureBox.Image));
                 var page = _tesseract.Process(img);
                 string ocrText = page.GetText();
@@ -55,19 +56,12 @@ namespace KeepWowLoggedIn.Helpers
                     continue;
                 }
 
-                if (!ocrText.Contains("Disconnect", StringComparison.OrdinalIgnoreCase) && !ocrText.Contains("Reconnect", StringComparison.OrdinalIgnoreCase))
-                {
-                    _textBox.Text = "reconnect not found, no actions taken";
-                    await Task.Run(() => Task.Delay(TimeSpan.FromSeconds(5)));
-                    continue;
-                }
-
                 // TODO: add more checks here
                 // TODO: check what message comes up when your net drops
                 // is "cancel" too generic?
-                if (ocrText.Contains("Cancel", StringComparison.OrdinalIgnoreCase) || ocrText.Contains("Logging in", StringComparison.OrdinalIgnoreCase) || ocrText.Contains("Change Realm", StringComparison.OrdinalIgnoreCase))
+                if (ocrText.Contains("Cancel", StringComparison.OrdinalIgnoreCase) || ocrText.Contains("Logging in", StringComparison.OrdinalIgnoreCase) || ocrText.Contains("Position in queue", StringComparison.OrdinalIgnoreCase) || ocrText.Contains("queue", StringComparison.OrdinalIgnoreCase) || ocrText.Contains("Estimated time", StringComparison.OrdinalIgnoreCase))
                 {
-                    _textBox.Text = "appear to be logging in, no actions taken";
+                    _textBox.Text = "appear to be logging in or in a queue, no actions taken";
                     await Task.Run(() => Task.Delay(TimeSpan.FromSeconds(5)));
                     continue;
                 }
@@ -75,6 +69,13 @@ namespace KeepWowLoggedIn.Helpers
                 if (ocrText.Contains("Enter World", StringComparison.OrdinalIgnoreCase) || ocrText.Contains("Delete Character", StringComparison.OrdinalIgnoreCase) || ocrText.Contains("AddOns", StringComparison.OrdinalIgnoreCase) || ocrText.Contains("Shop", StringComparison.OrdinalIgnoreCase))
                 {
                     _textBox.Text = "appear to be on character select screen, no actions taken";
+                    await Task.Run(() => Task.Delay(TimeSpan.FromSeconds(5)));
+                    continue;
+                }
+
+                if (!ocrText.Contains("Disconnect", StringComparison.OrdinalIgnoreCase) && !ocrText.Contains("Reconnect", StringComparison.OrdinalIgnoreCase))
+                {
+                    _textBox.Text = "reconnect not found, no actions taken";
                     await Task.Run(() => Task.Delay(TimeSpan.FromSeconds(5)));
                     continue;
                 }

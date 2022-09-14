@@ -20,7 +20,7 @@ namespace KeepWowLoggedIn
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var engine = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default);
+            var engine = new TesseractEngine(@"./tessdata", "eng_best", EngineMode.Default);
             var img = Pix.LoadFromMemory(Utils.ImagingUtils.ImageToByteArray(pictureBox1.Image));
             var page = engine.Process(img);
             textBox1.Text = page.GetText();
