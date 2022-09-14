@@ -64,6 +64,6 @@ jobs:
         automatic_release_tag: "latest"
         prerelease: false
         files: |
-          "${{ GITHUB_WORKSPACE }}\KeepWowLoggedIn\bin\Release\net6.0-windows\win-x64\*"
+          "${GITHUB_WORKSPACE}\KeepWowLoggedIn\bin\Release\net6.0-windows\win-x64\*"
         
 
