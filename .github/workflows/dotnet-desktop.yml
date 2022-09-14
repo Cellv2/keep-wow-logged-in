@@ -50,3 +50,14 @@ jobs:
 
     - name: Publish
       run: dotnet publish KeepWowLoggedIn/KeepWowLoggedIn.csproj -c Release -r win-x64 --self-contained
+
+    - name: Automatic Releases
+      uses: marvinpinto/action-automatic-releases@v1.2.1
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: false
+        files: |
+          "\bin\Release\net6.0-windows\win-x64\*"
+        
+
