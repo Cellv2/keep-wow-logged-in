@@ -48,14 +48,17 @@ jobs:
         Appx_Package_Build_Mode: StoreUpload
         Configuration: ${{ matrix.configuration }}
 
-    - name: Publish
-      run: dotnet publish KeepWowLoggedIn/KeepWowLoggedIn.csproj -c Release -r win-x64 --self-contained
+#     - name: Publish
+#       run: dotnet publish KeepWowLoggedIn/KeepWowLoggedIn.csproj -c Release -r win-x64 --self-contained
 
   auto-release:
     runs-on: windows-latest
     needs: build
     steps:
     - uses: actions/checkout@v3
+    
+    - name: Publish
+      run: dotnet publish KeepWowLoggedIn/KeepWowLoggedIn.csproj -c Release -r win-x64 --self-contained
     
     - name: Automatic Releases
       uses: marvinpinto/action-automatic-releases@v1.2.1
