@@ -8,6 +8,6 @@ namespace KeepWowLoggedIn.Constants
 {
     internal class ImageConstants
     {
-        public static Image InstructionsImage = Image.FromFile(@".\Img\instructions.png");
+        public static Image InstructionsImage = Image.FromFile(@$"{Environment.CurrentDirectory}\Img\instructions.png");
     }
 }
