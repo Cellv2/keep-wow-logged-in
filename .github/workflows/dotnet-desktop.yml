@@ -40,13 +40,13 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
       
-    - name: Create the app package
-      run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
-      env:
-        Appx_Bundle: Always
-        Appx_Bundle_Platforms: x86|x64
-        Appx_Package_Build_Mode: StoreUpload
-        Configuration: ${{ matrix.configuration }}
+#     - name: Create the app package
+#       run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
+#       env:
+#         Appx_Bundle: Always
+#         Appx_Bundle_Platforms: x86|x64
+#         Appx_Package_Build_Mode: StoreUpload
+#         Configuration: ${{ matrix.configuration }}
 
 #     - name: Publish
 #       run: dotnet publish KeepWowLoggedIn/KeepWowLoggedIn.csproj -c Release -r win-x64 --self-contained
@@ -67,5 +67,5 @@ jobs:
         automatic_release_tag: "latest"
         prerelease: false
         files: |
-          "${{ github.workspace }}/dist/**"
+          "${{ github.workspace }}\dist\"
         
