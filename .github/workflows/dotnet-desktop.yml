@@ -58,7 +58,7 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Publish
-      run: dotnet publish KeepWowLoggedIn/KeepWowLoggedIn.csproj -c Release -r win-x64 --self-contained
+      run: dotnet publish KeepWowLoggedIn/KeepWowLoggedIn.csproj -c Release -r win-x64 --self-contained -o dist
     
     - name: Automatic Releases
       uses: marvinpinto/action-automatic-releases@v1.2.1
@@ -66,7 +66,6 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
         prerelease: false
-        working-directory: ${{ github.workspace }}
         files: |
-          ".\KeepWowLoggedIn\bin\Release\net6.0-windows\win-x64\*"
+          "${{ github.workspace }}/KeepWowLoggedIn/dist/**"
         
