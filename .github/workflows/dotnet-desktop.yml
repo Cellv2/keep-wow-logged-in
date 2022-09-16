@@ -63,7 +63,7 @@ jobs:
     - name: Zip release files
       run: |
         cd dist
-        zip -r KeepWowLoggedIn_win64.zip win-x64/*
+        tar -cvf KeepWowLoggedIn_win64.zip ./win-x64
 #       zip -r ecm_${{ env.RELEASE_VERSION }}_win64.zip win64/*
     
     - name: Automatic Releases
