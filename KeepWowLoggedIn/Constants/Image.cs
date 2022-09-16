@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeepWowLoggedIn.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace KeepWowLoggedIn.Constants
 {
     internal class ImageConstants
     {
-        public static Image InstructionsImage = Image.FromFile(@".\Img\instructions.png");
+        public static Image InstructionsImage = Resources.instructions;
     }
 }
