@@ -59,6 +59,12 @@ jobs:
     
     - name: Publish
       run: dotnet publish KeepWowLoggedIn/KeepWowLoggedIn.csproj -c Release -r win-x64 --self-contained -o dist
+      
+    - name: Zip release files
+      run: |
+        cd dist
+        zip -r KeepWowLoggedIn_win64.zip win-x64/*
+#       zip -r ecm_${{ env.RELEASE_VERSION }}_win64.zip win64/*
     
     - name: Automatic Releases
       uses: marvinpinto/action-automatic-releases@v1.2.1
@@ -67,5 +73,6 @@ jobs:
         automatic_release_tag: "latest"
         prerelease: false
         files: |
-          "${{ github.workspace }}\dist\**\*"
+          ./dist/*.zip
+#          "${{ github.workspace }}\dist\**\*"
         
