@@ -1,0 +1,78 @@
+# https://docs.microsoft.com/en-us/dotnet/architecture/devops-for-aspnet-developers/actions-build
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.x
+        
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.2
+      
+#     - name: Restore dependencies
+#       run: dotnet restore
+    - name: Restore the application
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      
+#     - name: Create the app package
+#       run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
+#       env:
+#         Appx_Bundle: Always
+#         Appx_Bundle_Platforms: x86|x64
+#         Appx_Package_Build_Mode: StoreUpload
+#         Configuration: ${{ matrix.configuration }}
+
+#     - name: Publish
+#       run: dotnet publish KeepWowLoggedIn/KeepWowLoggedIn.csproj -c Release -r win-x64 --self-contained
+
+  auto-release:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Publish
+      run: dotnet publish KeepWowLoggedIn/KeepWowLoggedIn.csproj -c Release -r win-x64 --self-contained -o dist
+      
+    - name: Zip release files
+      run: |
+        cd dist
+        tar -cvf KeepWowLoggedIn_win64.zip ./win-x64
+#       zip -r ecm_${{ env.RELEASE_VERSION }}_win64.zip win64/*
+    
+    - name: Automatic Releases
+      uses: marvinpinto/action-automatic-releases@v1.2.1
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: false
+        files: |
+          ./dist/*.zip
+#          "${{ github.workspace }}\dist\**\*"
+        
